@@ -1,0 +1,27 @@
+function ruby_install() {
+  apt-get update
+  $minimal_apt_get_install $buildDeps
+  $minimal_apt_get_install $packages
+  rm -rf /var/lib/apt/lists/*
+  curl -fSL -o jruby.tar.gz "https://s3.amazonaws.com/jruby.org/downloads/$JRUBY_VERSION/jruby-bin-$JRUBY_VERSION.tar.gz"
+  echo "$RUBY_DOWNLOAD_SHA256 *jruby.tar.gz" | sha256sum -c -
+  mkdir -p /usr/local/jruby 
+  tar -xzf jruby.tar.gz -C /usr/local/jruby --strip-components=1
+  rm jruby.tar.gz
+  export PATH=/usr/local/jruby/bin:$PATH
+  gem update --system $RUBYGEMS_VERSION
+  cd /root
+
+  gem install bundler --version "$BUNDLER_VERSION"
+
+  # install things globally, for great justice
+  # and don't create ".bundle" in all our apps
+  export GEM_HOME=/usr/local/bundle
+  export BUNDLE_PATH="$GEM_HOME"
+  export BUNDLE_BIN="$GEM_HOME/bin"
+  export BUNDLE_SILENCE_ROOT_WARNING=1
+  export BUNDLE_APP_CONFIG="$GEM_HOME"
+  export PATH=$BUNDLE_BIN:$PATH
+  mkdir -p "$GEM_HOME" "$BUNDLE_BIN"
+  chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
+}
