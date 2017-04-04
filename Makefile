@@ -1,5 +1,5 @@
 NAME = stepsaway/baseimage
-VERSION = 2.0.0
+VERSION = 2.0.1
 
 .PHONY: all build_all clean clean_images \
 	build_jruby1726 build_jruby914 \
