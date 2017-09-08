@@ -1,5 +1,5 @@
 NAME = stepsaway/baseimage
-VERSION = 2.0.1
+VERSION = 2.1.1
 
 .PHONY: all build_all clean clean_images \
 	build_jruby1726 build_jruby914 \
@@ -37,7 +37,6 @@ clean_images:
 release: test
 	@if ! docker images $(NAME)-jruby17:26-$(VERSION) | awk '{ print $$2 }' | grep -q -F 26-$(VERSION); then echo "$(NAME)-jruby17:26-$(VERSION) is not yet built. Please run 'make build'"; false; fi
 	@if ! docker images $(NAME)-jruby91:4-$(VERSION) | awk '{ print $$2 }' | grep -q -F 4-$(VERSION); then echo "$(NAME)-jruby91:4-$(VERSION) is not yet built. Please run 'make build'"; false; fi
-	@if ! head -n 1 Changelog.md | grep -q 'release date'; then echo 'Please note the release date in Changelog.md.' && false; fi
 	docker push $(NAME)-jruby17:26-$(VERSION)
 	docker push $(NAME)-jruby91:4-$(VERSION)
 	@echo "*** Don't forget to create a tag. git tag $(VERSION) && git push origin $(VERSION)"
