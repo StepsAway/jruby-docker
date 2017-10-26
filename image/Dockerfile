@@ -1,5 +1,5 @@
 FROM stepsaway/baseimage:##TAG##
-MAINTAINER StepsAway <devgru@stepsaway.com>
+LABEL maintainer="StepsAway <infra-ops@stepsaway.com>"
 
 COPY . /rd_build
 RUN /rd_build/install.sh
